@@ -41,7 +41,7 @@ class Engine:
         while self.RUNNING:
             self.CLOCK.tick(self.FPS_LIMIT)
             self.DURING_LOOP()
-            self.DELETA_TIME = self._get_dt()
+            self.DELTA_TIME = self._get_dt()
             self._event_handler()
             self.EVENT_LOOP()
             pygame.display.flip()
