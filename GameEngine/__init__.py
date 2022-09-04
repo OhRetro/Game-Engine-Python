@@ -2,24 +2,7 @@ import pygame
 from time import time as t_time
 
 class Engine:
-    def __init__(self, title:str, resolution:tuple, fps_limit:int, during_loop=None, before_loop=None, after_loop=None, event_loop=None):
-        self.DURING_LOOP = during_loop
-        self.BEFORE_LOOP = before_loop
-        self.AFTER_LOOP = after_loop
-        self.EVENT_LOOP = event_loop
-        
-        if self.DURING_LOOP is None:
-            self.DURING_LOOP = self._pass
-        
-        if before_loop is None:
-            self.BEFORE_LOOP = self._pass
-        
-        if after_loop is None:
-            self.AFTER_LOOP = self._pass    
-
-        if event_loop is None:
-            self.EVENT_LOOP = self._pass
-            
+    def __init__(self, title:str, resolution:tuple, fps_limit:int):  
         pygame.init()
         
         self.SCREEN = pygame.display.get_surface()
@@ -37,15 +20,15 @@ class Engine:
         self._game_loop()
         
     def _game_loop(self):
-        self.BEFORE_LOOP()
+        self.before_loop()
         while self.RUNNING:
             self.CLOCK.tick(self.FPS_LIMIT)
-            self.DURING_LOOP()
+            self.during_loop()
             self.DELTA_TIME = self._get_dt()
             self._event_handler()
-            self.EVENT_LOOP()
+            self.event_loop()
             pygame.display.flip()
-        self.AFTER_LOOP()
+        self.after_loop()
         pygame.quit()
     
     def _pass(self):
@@ -63,3 +46,15 @@ class Engine:
         dt = (t_time() - self.PREV_TIME) * self.FPS_TARGET
         self.PREV_TIME = t_time()
         return dt
+    
+    def before_loop(self):
+        pass
+    
+    def after_loop(self):
+        pass
+    
+    def event_loop(self):
+        pass
+    
+    def during_loop(self):
+        pass

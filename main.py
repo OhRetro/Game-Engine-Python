@@ -1,12 +1,18 @@
-from Engine.engine import Engine
+from GameEngine import Engine
+from rich import print
 
-def before():
-    print("before")
+class Game(Engine):
+    def before_loop(self):
+        pass
+    
+    def after_loop(self):
+        pass
+    
+    def event_loop(self):
+        pass
+    
+    def during_loop(self):
+        pass
 
 if __name__ == "__main__":
-    game = Engine(
-        "Game Engine",
-        (800, 600),
-        60,
-        before_loop=before
-        )
+    Game("Game Engine Test Program", (800, 600), 60)
