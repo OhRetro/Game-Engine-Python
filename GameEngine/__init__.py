@@ -5,8 +5,7 @@ class Engine:
     def __init__(self, title:str, resolution:tuple, fps_limit:int):  
         pygame.init()
         
-        self.SCREEN = pygame.display.get_surface()
-        pygame.display.set_mode(resolution)
+        self.SCREEN = pygame.display.set_mode(resolution)
         pygame.display.set_caption(title)
         
         self.CLOCK = pygame.time.Clock()
@@ -23,21 +22,15 @@ class Engine:
         self.before_loop()
         while self.RUNNING:
             self.CLOCK.tick(self.FPS_LIMIT)
-            self.during_loop()
             self.DELTA_TIME = self._get_dt()
-            self._event_handler()
-            self.event_loop()
+            self.event_handler()
+            self.during_loop()
             pygame.display.flip()
         self.after_loop()
         pygame.quit()
     
     def _pass(self):
         pass
-    
-    def _event_handler(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self._quit()
     
     def _quit(self):
         self.RUNNING = False
@@ -53,8 +46,10 @@ class Engine:
     def after_loop(self):
         pass
     
-    def event_loop(self):
-        pass
+    def event_handler(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self._quit()
     
     def during_loop(self):
         pass
