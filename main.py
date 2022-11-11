@@ -1,5 +1,5 @@
-from GameEngine import Engine
-from pygame import mouse, locals, event, display
+from GameEngine import Engine, text
+from pygame import mouse, locals, event
 
 from rich import print
 from time import time
@@ -9,30 +9,34 @@ START_TIME = time()
 
 class Game(Engine):
     def on_game_startup(self):
-        print(f"It took {round(time() - START_TIME, 2)} seconds to start.")
+        print(f"STARTUP TIME: {round(time() - START_TIME, 2)} seconds.")
         
         #mouse.set_visible(False)
     
     def on_game_stop(self):
-        print(f"It have been running for {round(time() - START_TIME, 2)} seconds.")
+        print(f"RUNNING TIME: {round(time() - START_TIME, 2)} seconds.")
     
     def event_handler(self):
         for e in event.get():
             if e.type == locals.KEYDOWN and e.key == locals.K_ESCAPE or e.type != locals.KEYDOWN and e.type == locals.QUIT:
-                self._quit()
+                self.quit()
 
-    
     def during_loop(self):
-        self.screen.fill((10, 10, 10))
+        self.window.fill((10, 10, 10))
         
-        self.text("This is a Text", 10, 10)
-        self.text_list([
-            "This is a",
-            "list of text"
-            ], 10, 35)
+        hello_text = text.text("Hello", 10, 10)
+        self.display_object(hello_text)
+        
+        multi_texts = text.text_list([
+            "AAA",
+            "BBB",
+            "CCC",
+            ], 10, 25)
+        for texts in multi_texts:
+            self.display_object(texts)
         
 if __name__ == "__main__":
     try:
-        Game("Test Program", (800, 600), 60)
+        Game()
     except Exception:
         print(tb_format_exc())
