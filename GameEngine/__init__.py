@@ -7,8 +7,9 @@ class Engine:
     def __init__(self, title:str="Window Title", resolution:tuple=(800, 600), fps_limit:int=60):  
         pygame.init()
         
-        self.window = display.set_mode(resolution)
-        display.set_caption(title)
+        self.display = display
+        self.window = self.display.set_mode(resolution)
+        self.display.set_caption(title)
     
         self.CLOCK = pygame.time.Clock()
         self.FPS_LIMIT = fps_limit
@@ -18,19 +19,22 @@ class Engine:
         self.PREV_TIME = t_time()
         self.DELTATIME = 0
         
+        self.on_game = {"START": None, "STOP": None}
+        
+        self.game_setup()
         self._game_loop()
         
     def _game_loop(self):
-        self.on_game_startup()
+        self.on_game["START"]() if callable(self.on_game["START"]) else None
         
         while self.RUNNING:
             self.CLOCK.tick(self.FPS_LIMIT)
             self.DELTATIME = self._get_dt()
             self.event_handler()
             self.during_loop()
-            display.flip()
+            self.display.flip()
         
-        self.on_game_stop()
+        self.on_game["STOP"]() if callable(self.on_game["STOP"]) else None
         
         pygame.quit()
     
@@ -39,15 +43,15 @@ class Engine:
         self.PREV_TIME = t_time()
         return dt
     
+    def _pass(self):
+        pass
+    
     def quit(self):
         self.RUNNING = False
+    
+    def game_setup(self):
+        pass
         
-    def on_game_startup(self):
-        pass
-    
-    def on_game_stop(self):
-        pass
-    
     def event_handler(self):
         for e in event.get():
             if e.type == pygame.QUIT:
@@ -56,6 +60,5 @@ class Engine:
     def during_loop(self):
         pass
     
-    def display_object(self, game_object):
-        self.window.blit(game_object[0], game_object[1])
-        
+    def show_object(self, game_object):
+        self.window.blit(game_object[0], game_object[1])    
